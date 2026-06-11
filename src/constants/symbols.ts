@@ -4,4 +4,7 @@
  */
 export const TYPES = {
   CartController: Symbol.for('CartController'),
+  CartService: Symbol.for('CartService'),
+  CartSessionStore: Symbol.for('CartSessionStore'),
+  SalesforceCartClient: Symbol.for('SalesforceCartClient')
 } as const;

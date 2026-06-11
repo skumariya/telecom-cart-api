@@ -9,6 +9,7 @@ export function buildRouter(container: Container): Router {
   const ctrl = container.get<CartController>(TYPES.CartController);
 
   // Carts endpoints
+  router.post('/carts/:cartId/items', ctrl.addItem);
   router.get('/carts', ctrl.getCart);
 
   return router;

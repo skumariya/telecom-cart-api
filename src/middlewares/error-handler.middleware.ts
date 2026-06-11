@@ -23,7 +23,7 @@ interface ErrorResponse {
  *   SalesforceError(VALIDATION)          → 400
  *   anything else                        → 500 INTERNAL
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 export const errorHandlerMiddleware: ErrorRequestHandler = (
   err: unknown,
   _req: Request,

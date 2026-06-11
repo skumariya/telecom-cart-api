@@ -2,6 +2,11 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import { CartController } from '../controllers/cart.controller';
 import { TYPES } from '../constants/symbols';
+import { ICartService } from '../interfaces/cart-service.interface';
+import { CartService } from '../modules/cart/cart.service';
+import { CartSessionStore } from '../modules/cart/cart-session-store';
+import { ISalesforceCartClient } from '../interfaces/salesforce-cart-client.interface';
+import { SalesforceCartClient } from '../modules/salesforce/salesforce-cart-client';
 
 
 /**
@@ -16,6 +21,15 @@ export function buildContainer(): Container {
 
   // controller binding
   container.bind<CartController>(TYPES.CartController).to(CartController);
+
+  // services binding
+  container.bind<ICartService>(TYPES.CartService).to(CartService);
+
+  container.bind<CartSessionStore>(TYPES.CartSessionStore).to(CartSessionStore);
+
+  container
+    .bind<ISalesforceCartClient>(TYPES.SalesforceCartClient)
+    .to(SalesforceCartClient);
   
   return container;
 }
