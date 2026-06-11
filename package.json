@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Telecom Cart Experience API — thin layer over Salesforce non-persistent cart context",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
     "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
     "test": "jest",
     "test:watch": "jest --watchAll",
