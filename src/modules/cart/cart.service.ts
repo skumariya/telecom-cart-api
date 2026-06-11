@@ -28,6 +28,10 @@ export class CartService implements ICartService {
 
   // ─── Public ───────────────────────────────────────────────────────────────
   
+  async getOrCreateContext(sessionId: string, cartId: string): Promise<CartContext> {
+    return this.resolveContext(sessionId, cartId);
+  }
+  
   async addItem(
     sessionId: string,
     cartId: string,

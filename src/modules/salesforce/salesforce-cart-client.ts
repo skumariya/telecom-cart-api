@@ -28,6 +28,8 @@ function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const noWait = (): Promise<void> => Promise.resolve();
+
 // ─── Client ────────────────────────────────────────────────────────────────────
 
 /**
@@ -53,6 +55,18 @@ export class SalesforceCartClient implements ISalesforceCartClient {
   }
 
   // ─── Public API ──────────────────────────────────────────────────────────────
+  static create(
+    opts: { ttlMs?: number; simulateLatency?: boolean } = {},
+  ): SalesforceCartClient {
+    const instance = new SalesforceCartClient();
+    const mutable = instance as unknown as {
+      ttlMs: number;
+      delay: (ms: number) => Promise<void>;
+    };
+    mutable.ttlMs = opts.ttlMs ?? DEFAULT_TTL_MS;
+    mutable.delay = (opts.simulateLatency ?? true) ? wait : noWait;
+    return instance;
+  }
 
   async createContext(cartId: string): Promise<CartContext> {
     await this.delay(LATENCY_MS);

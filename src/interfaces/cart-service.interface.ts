@@ -1,6 +1,7 @@
 import type { AddItemPayload, Cart, CartContext, CartItem } from '../types/cart.types';
 
 export interface ICartService {
+  getOrCreateContext(sessionId: string, cartId: string): Promise<CartContext>;
   addItem(sessionId: string, cartId: string, payload: AddItemPayload): Promise<CartItem>;
   getCart(sessionId: string, cartId: string): Promise<Cart>;
   updateItemQty(
