@@ -7,6 +7,7 @@ import { TYPES } from '../constants/symbols';
 import { ICartService } from '../interfaces/cart-service.interface';
 import { validateDto } from '../utils/validate';
 import { AddItemDto } from '../dtos/add-item.dto';
+import { UpdateItemQtyDto } from '../dtos/update-item-qty.dto';
 
 @injectable()
 export class CartController {
@@ -41,6 +42,40 @@ export class CartController {
       const sessionId = this.extractSession(req);
       const cart = await this.cartService.getCart(sessionId, req.params.cartId);
       res.status(HttpStatus.OK).json(cart);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  // ─── DELETE /carts/:cartId/items/:itemId ───────────────────────────────────
+
+  removeItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const sessionId = this.extractSession(req);
+      await this.cartService.removeItem(sessionId, req.params.cartId, req.params.itemId);
+      res.status(HttpStatus.NO_CONTENT).send();
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  // ─── PATCH /carts/:cartId/items/:itemId ────────────────────────────────────
+
+  updateItemQty = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const sessionId = this.extractSession(req);
+      const dto = await validateDto(UpdateItemQtyDto, req.body);
+      const item = await this.cartService.updateItemQty(
+        sessionId,
+        req.params.cartId,
+        req.params.itemId,
+        dto.quantity,
+      );
+      res.status(HttpStatus.OK).json(item);
     } catch (err) {
       next(err);
     }

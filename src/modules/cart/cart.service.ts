@@ -27,7 +27,7 @@ export class CartService implements ICartService {
   ) {}
 
   // ─── Public ───────────────────────────────────────────────────────────────
-
+  
   async addItem(
     sessionId: string,
     cartId: string,
@@ -42,6 +42,22 @@ export class CartService implements ICartService {
     return this.withRetry(sessionId, cartId, (ctxId) => this.client.getCart(ctxId));
   }
   
+  async updateItemQty(
+    sessionId: string,
+    cartId: string,
+    itemId: string,
+    qty: number,
+  ): Promise<CartItem> {
+    return this.withRetry(sessionId, cartId, (ctxId) =>
+      this.client.updateItemQty(ctxId, itemId, qty),
+    );
+  }
+
+  async removeItem(sessionId: string, cartId: string, itemId: string): Promise<void> {
+    return this.withRetry(sessionId, cartId, (ctxId) =>
+      this.client.removeItem(ctxId, itemId),
+    );
+  }
 
   // ─── Private ──────────────────────────────────────────────────────────────
 

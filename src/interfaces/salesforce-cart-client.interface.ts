@@ -8,4 +8,6 @@ export interface ISalesforceCartClient {
   createContext(cartId: string): Promise<CartContext>;
   addItem(contextId: string, payload: AddItemPayload): Promise<CartItem>;
   getCart(contextId: string): Promise<Cart>;
+  updateItemQty(contextId: string, itemId: string, qty: number): Promise<CartItem>;
+  removeItem(contextId: string, itemId: string): Promise<void>;
 }

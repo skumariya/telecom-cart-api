@@ -90,6 +90,35 @@ export class SalesforceCartClient implements ISalesforceCartClient {
     const totalAmount = this.round(items.reduce((sum, i) => sum + i.totalPrice, 0));
     return { cartId: cart.cartId, items, totalAmount, currency: cart.currency };
   }
+
+  async updateItemQty(contextId: string, itemId: string, qty: number): Promise<CartItem> {
+    await this.delay(LATENCY_MS);
+    const { cart } = this.resolveContext(contextId);
+
+    if (!Number.isInteger(qty) || qty < 1) {
+      throw new SalesforceError('VALIDATION', 'qty must be an integer >= 1');
+    }
+    const item = cart.items.get(itemId);
+    if (!item) {
+      throw new SalesforceError('NOT_FOUND', `Item '${itemId}' not found in cart`);
+    }
+    const updated: CartItem = {
+      ...item,
+      quantity: qty,
+      totalPrice: this.round(item.unitPrice * qty),
+    };
+    cart.items.set(itemId, updated);
+    return updated;
+  }
+
+  async removeItem(contextId: string, itemId: string): Promise<void> {
+    await this.delay(LATENCY_MS);
+    const { cart } = this.resolveContext(contextId);
+    if (!cart.items.has(itemId)) {
+      throw new SalesforceError('NOT_FOUND', `Item '${itemId}' not found in cart`);
+    }
+    cart.items.delete(itemId);
+  }
  
 
   // ─── Private ─────────────────────────────────────────────────────────────────

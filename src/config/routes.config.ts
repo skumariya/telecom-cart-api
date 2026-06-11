@@ -11,6 +11,8 @@ export function buildRouter(container: Container): Router {
   // Carts endpoints
   router.post('/carts/:cartId/items', ctrl.addItem);
   router.get('/carts/:cartId', ctrl.getCart);
+  router.delete('/carts/:cartId/items/:itemId', ctrl.removeItem);
+  router.patch('/carts/:cartId/items/:itemId', ctrl.updateItemQty);
 
   return router;
 }
