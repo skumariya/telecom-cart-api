@@ -1,4 +1,5 @@
-import { createApp } from "./app";
+import 'reflect-metadata';
+import { createApp } from './app';
 
 const PORT = parseInt(process.env['PORT'] ?? '3000', 10);
 
