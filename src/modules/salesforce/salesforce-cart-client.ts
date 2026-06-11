@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { injectable } from 'inversify';
 import { v4 as uuidv4 } from 'uuid';
 import type { ISalesforceCartClient } from '../../interfaces/salesforce-cart-client.interface';
-import type { AddItemPayload, CartContext, CartItem } from '../../types/cart.types';
+import type { AddItemPayload, Cart, CartContext, CartItem } from '../../types/cart.types';
 import { SalesforceError } from '../../errors/app.errors';
 
 // ─── Internal State ────────────────────────────────────────────────────────────
@@ -83,6 +83,13 @@ export class SalesforceCartClient implements ISalesforceCartClient {
     return cartItem;
   }
 
+  async getCart(contextId: string): Promise<Cart> {
+    await this.delay(LATENCY_MS);
+    const { cart } = this.resolveContext(contextId);
+    const items = Array.from(cart.items.values());
+    const totalAmount = this.round(items.reduce((sum, i) => sum + i.totalPrice, 0));
+    return { cartId: cart.cartId, items, totalAmount, currency: cart.currency };
+  }
  
 
   // ─── Private ─────────────────────────────────────────────────────────────────

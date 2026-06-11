@@ -4,7 +4,7 @@ import { TYPES } from '../../constants/symbols';
 import type { CartSessionStore } from './cart-session-store';
 import { ICartService } from '../../interfaces/cart-service.interface';
 import { ISalesforceCartClient } from '../../interfaces/salesforce-cart-client.interface';
-import { AddItemPayload, CartContext, CartItem } from '../../types/cart.types';
+import { AddItemPayload, Cart, CartContext, CartItem } from '../../types/cart.types';
 import { SalesforceError } from '../../errors/app.errors';
 
 /**
@@ -38,6 +38,9 @@ export class CartService implements ICartService {
     );
   }
 
+  async getCart(sessionId: string, cartId: string): Promise<Cart> {
+    return this.withRetry(sessionId, cartId, (ctxId) => this.client.getCart(ctxId));
+  }
   
 
   // ─── Private ──────────────────────────────────────────────────────────────

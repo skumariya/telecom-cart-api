@@ -34,8 +34,16 @@ export class CartController {
     }
   };
 
+  // ─── GET /carts/:cartId ────────────────────────────────────────────────────
+
   getCart = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    res.status(HttpStatus.OK).json({"meessage": "get cart api test"});
+    try {
+      const sessionId = this.extractSession(req);
+      const cart = await this.cartService.getCart(sessionId, req.params.cartId);
+      res.status(HttpStatus.OK).json(cart);
+    } catch (err) {
+      next(err);
+    }
   };
 
 

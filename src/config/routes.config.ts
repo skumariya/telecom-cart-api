@@ -10,7 +10,7 @@ export function buildRouter(container: Container): Router {
 
   // Carts endpoints
   router.post('/carts/:cartId/items', ctrl.addItem);
-  router.get('/carts', ctrl.getCart);
+  router.get('/carts/:cartId', ctrl.getCart);
 
   return router;
 }
